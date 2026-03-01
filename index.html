@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1, viewport-fit=cover" />
+  <title>Boulder Brain</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
+  <main class="w-full max-w-md">
+    <section class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+      <div class="sticky top-0 z-10 backdrop-blur bg-white/85 border-b border-slate-100">
+        <div class="px-5 py-4">
+          <h1 class="text-xl font-semibold tracking-tight text-slate-900">Boulder Brain</h1>
+          <p class="text-xs text-slate-600">Tap an answer. Build your streak.</p>
+        </div>
+
+        <div class="px-5 pb-4 flex items-center gap-3">
+          <label class="text-xs text-slate-600 w-20">Category</label>
+          <select id="categorySelect"
+            class="flex-1 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800">
+            <option value="All">All</option>
+            <option value="Terms">Terms</option>
+            <option value="Technique">Technique</option>
+            <option value="Training">Training</option>
+            <option value="History">History</option>
+            <option value="Holds">Holds</option>
+            <option value="Gym Culture">Gym Culture</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-sm text-slate-600">
+            Score: <span id="score" class="font-semibold text-slate-900">0</span>
+          </div>
+          <div class="text-sm text-slate-600 flex items-center gap-2">
+            <span>Streak: <span id="streak" class="font-semibold text-slate-900">0</span></span>
+            <span id="flame" class="hidden select-none" aria-hidden="true">🔥</span>
+          </div>
+        </div>
+
+        <div id="card" class="rounded-3xl border border-slate-200 bg-slate-50 p-5 transition duration-200 ease-out">
+          <div class="flex items-center justify-between mb-3">
+            <span id="pill" class="text-[11px] text-slate-600 rounded-full border border-slate-200 bg-white px-2 py-1">—</span>
+            <span id="counter" class="text-[11px] text-slate-500">—</span>
+          </div>
+
+          <div id="question" class="text-lg font-semibold text-slate-900 leading-snug">
+            Loading…
+          </div>
+
+          <div id="imageWrap" class="hidden mt-4 rounded-2xl border border-slate-200 bg-white overflow-hidden">
+            <div class="p-4 flex items-center justify-center">
+              <div id="imageSlot" class="w-full flex items-center justify-center"></div>
+            </div>
+          </div>
+
+          <div id="choices" class="grid gap-3 mt-4"></div>
+          <div id="feedback" class="mt-4 text-sm rounded-2xl px-4 py-3 hidden"></div>
+
+          <div class="mt-4 flex gap-3">
+            <button id="nextBtn"
+              class="flex-1 rounded-2xl bg-slate-900 text-white py-3 font-medium active:scale-[0.99] transition">
+              Next
+            </button>
+            <button id="resetBtn"
+              class="rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-700 font-medium active:scale-[0.99] transition">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <p class="mt-4 text-xs text-slate-500 text-center">
+          (If it says “Missing questions.json”, upload that file to the same repo)
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Minimal SVG icons for hold-ID questions (no extra files needed)
+    const HOLD_SVGS = {
+      jug: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#334155"/></linearGradient></defs>
+        <path d="M40 60 Q150 10 260 60 Q290 80 260 120 Q150 175 40 120 Q10 80 40 60Z" fill="url(#g)"/>
+        <path d="M80 85 Q150 55 220 85 Q240 92 220 110 Q150 135 80 110 Q60 92 80 85Z" fill="#e2e8f0" opacity="0.25"/>
+      </svg>`,
+      sloper: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <path d="M40 120 Q70 50 150 40 Q230 50 260 120 Q150 165 40 120Z" fill="#0f172a"/>
+        <path d="M70 118 Q95 75 150 68 Q205 75 230 118" fill="none" stroke="#e2e8f0" stroke-width="10" opacity="0.22" stroke-linecap="round"/>
+      </svg>`,
+      pinch: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <path d="M70 40 Q150 25 230 40 Q260 70 230 140 Q150 160 70 140 Q40 70 70 40Z" fill="#0f172a"/>
+        <rect x="135" y="48" width="30" height="115" rx="14" fill="#e2e8f0" opacity="0.18"/>
+      </svg>`,
+      crimp: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <rect x="40" y="80" width="220" height="45" rx="16" fill="#0f172a"/>
+        <rect x="55" y="92" width="190" height="10" rx="5" fill="#e2e8f0" opacity="0.22"/>
+      </svg>`,
+      pocket: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <path d="M55 40 Q150 15 245 40 Q270 80 245 140 Q150 170 55 140 Q30 80 55 40Z" fill="#0f172a"/>
+        <circle cx="120" cy="95" r="20" fill="#e2e8f0" opacity="0.18"/>
+        <circle cx="180" cy="95" r="20" fill="#e2e8f0" opacity="0.18"/>
+      </svg>`,
+      volume: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <path d="M70 140 L150 35 L230 140 Z" fill="#0f172a"/>
+        <path d="M150 35 L190 140" stroke="#e2e8f0" stroke-width="10" opacity="0.18" stroke-linecap="round"/>
+      </svg>`,
+      undercling: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <path d="M50 120 Q150 170 250 120 Q230 70 150 80 Q70 70 50 120Z" fill="#0f172a"/>
+        <path d="M85 118 Q150 145 215 118" fill="none" stroke="#e2e8f0" stroke-width="10" opacity="0.18" stroke-linecap="round"/>
+      </svg>`,
+      gaston: `<svg viewBox="0 0 300 180" class="w-full max-w-[260px] h-auto">
+        <path d="M65 45 Q150 25 235 45 Q260 85 235 135 Q150 160 65 135 Q40 85 65 45Z" fill="#0f172a"/>
+        <path d="M95 70 L205 110" stroke="#e2e8f0" stroke-width="12" opacity="0.18" stroke-linecap="round"/>
+      </svg>`
+    };
+
+    const elQuestion = document.getElementById("question");
+    const elChoices = document.getElementById("choices");
+    const elFeedback = document.getElementById("feedback");
+    const elScore = document.getElementById("score");
+    const elStreak = document.getElementById("streak");
+    const elFlame = document.getElementById("flame");
+    const elPill = document.getElementById("pill");
+    const elCounter = document.getElementById("counter");
+    const elCard = document.getElementById("card");
+    const elImageWrap = document.getElementById("imageWrap");
+    const elImageSlot = document.getElementById("imageSlot");
+
+    const btnNext = document.getElementById("nextBtn");
+    const btnReset = document.getElementById("resetBtn");
+    const categorySelect = document.getElementById("categorySelect");
+
+    let BANK = [];
+    let pool = [];
+    let deck = [];
+    let current = null;
+    let locked = false;
+    let score = 0;
+    let streak = 0;
+    let seen = 0;
+    let lastQ = null;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function showFeedback(ok, text) {
+      elFeedback.classList.remove("hidden");
+      elFeedback.className =
+        "mt-4 text-sm rounded-2xl px-4 py-3 " +
+        (ok ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+            : "bg-rose-50 text-rose-800 border border-rose-200");
+      elFeedback.textContent = text;
+    }
+
+    function clearFeedback() {
+      elFeedback.classList.add("hidden");
+      elFeedback.textContent = "";
+    }
+
+    function updateFlame() {
+      if (streak >= 5) {
+        elFlame.classList.remove("hidden");
+        const size = Math.min(1.35, 1 + (streak - 5) * 0.05);
+        elFlame.style.transform = `scale(${size})`;
+        elFlame.style.transition = "transform 160ms ease-out";
+      } else {
+        elFlame.classList.add("hidden");
+        elFlame.style.transform = "scale(1)";
+      }
+    }
+
+    function animateCard() {
+      elCard.classList.add("scale-[0.99]");
+      setTimeout(() => elCard.classList.remove("scale-[0.99]"), 90);
+    }
+
+    function setPool() {
+      const c = categorySelect.value;
+      pool = (c === "All") ? [...BANK] : BANK.filter(x => x.cat === c);
+      deck = shuffle([...Array(pool.length).keys()]);
+      seen = 0;
+      lastQ = null;
+    }
+
+    function draw() {
+      if (pool.length < 1) return;
+
+      if (deck.length === 0) deck = shuffle([...Array(pool.length).keys()]);
+
+      let idx = deck.shift();
+      if (pool.length > 1 && pool[idx].q === lastQ && deck.length > 0) {
+        const idx2 = deck.shift();
+        deck.push(idx);
+        idx = idx2;
+      }
+
+      current = pool[idx];
+      lastQ = current.q;
+      seen += 1;
+      locked = false;
+
+      animateCard();
+      clearFeedback();
+
+      elPill.textContent = current.cat;
+      elCounter.textContent = `${seen} / ${pool.length}`;
+      elQuestion.textContent = current.q;
+
+      if (current.type === "hold") {
+        elImageWrap.classList.remove("hidden");
+        elImageSlot.innerHTML = HOLD_SVGS[current.holdKey] || "";
+      } else {
+        elImageWrap.classList.add("hidden");
+        elImageSlot.innerHTML = "";
+      }
+
+      const opts = shuffle([...current.o]).slice(0, 4);
+
+      elChoices.innerHTML = "";
+      opts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className =
+          "w-full rounded-2xl border border-slate-200 bg-white py-3 px-4 text-left font-medium text-slate-800 " +
+          "hover:bg-slate-50 hover:border-slate-300 active:scale-[0.99] transition";
+        btn.textContent = opt;
+        btn.onclick = () => answer(opt);
+        elChoices.appendChild(btn);
+      });
+    }
+
+    function answer(opt) {
+      if (locked) return;
+      locked = true;
+
+      const ok = opt === current.a;
+      if (ok) {
+        score += 1;
+        streak += 1;
+        showFeedback(true, "Correct 🧗‍♀️");
+      } else {
+        streak = 0;
+        showFeedback(false, `Nope ❌  Answer: ${current.a}`);
+      }
+      elScore.textContent = score;
+      elStreak.textContent = streak;
+      updateFlame();
+    }
+
+    async function loadBank() {
+      const res = await fetch("./questions.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("Missing questions.json");
+      const data = await res.json();
+
+      BANK = (Array.isArray(data) ? data : []).filter(x =>
+        x && typeof x.q === "string" && typeof x.a === "string" && Array.isArray(x.o) && x.o.length >= 4 && typeof x.cat === "string"
+      );
+
+      setPool();
+      draw();
+    }
+
+    categorySelect.addEventListener("change", () => { setPool(); draw(); });
+    btnNext.addEventListener("click", draw);
+
+    btnReset.addEventListener("click", () => {
+      score = 0; streak = 0;
+      elScore.textContent = "0";
+      elStreak.textContent = "0";
+      updateFlame();
+      setPool();
+      draw();
+    });
+
+    loadBank().catch(() => {
+      elQuestion.textContent = "Missing questions.json — upload that file to the same repo.";
+    });
+  </script>
+</body>
+</html>

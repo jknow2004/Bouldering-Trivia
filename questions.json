@@ -1,0 +1,46 @@
+[
+{"cat":"Terms","q":"What is a jug?","a":"A large positive hold that is easy to grip","o":["A rounded friction hold","A tiny edge held with fingertips","A hold you only push on","A large positive hold that is easy to grip"]},
+{"cat":"Terms","q":"What is a crimp?","a":"A small edge held with bent fingers","o":["A hold you squeeze with thumb","A rounded friction hold","A small edge held with bent fingers","A big open-hand hold"]},
+{"cat":"Terms","q":"What is a sloper?","a":"A rounded hold relying on friction","o":["A deep incut edge","A rounded hold relying on friction","A pocket for one finger","A bolt-on foothold chip"]},
+{"cat":"Terms","q":"What is a pinch?","a":"A hold squeezed between fingers and thumb","o":["A tiny sharp edge","A hold squeezed between fingers and thumb","A hold you grip from underneath","A large flat volume feature"]},
+{"cat":"Terms","q":"What is a pocket?","a":"A hole you grip with one or more fingers","o":["A jug","A smear","A hole you grip with one or more fingers","A volume"]},
+{"cat":"Terms","q":"What does beta mean?","a":"Advice on how to do the climb","o":["A grade","Advice on how to do the climb","A rope device","A shoe rubber type"]},
+{"cat":"Terms","q":"What is an onsight?","a":"Sending first try with no prior beta","o":["Sending after watching someone","Sending first try with no prior beta","Sending after multiple tries","Sending without chalk"]},
+{"cat":"Terms","q":"What is a flash?","a":"Sending first try with prior beta","o":["Sending first try with no prior beta","Sending after a fall","Sending first try with prior beta","Sending with no feet"]},
+{"cat":"Terms","q":"What is a dyno?","a":"A dynamic jump to a hold","o":["A static reach","A rest position","A dynamic jump to a hold","A hangboard drill"]},
+{"cat":"Terms","q":"What is a mantle?","a":"Pressing down to rock over onto a ledge","o":["A heel hook","Pressing down to rock over onto a ledge","A toe hook","A rope knot"]},
+
+{"cat":"Technique","q":"What helps most on slab climbs?","a":"Balance and precise foot placement","o":["Maximum pulling power","Balance and precise foot placement","Only dynos","Overgripping every hold"]},
+{"cat":"Technique","q":"Why keep arms straighter when possible?","a":"It saves forearm energy","o":["It increases pump","It saves forearm energy","It makes holds bigger","It improves rubber"]},
+{"cat":"Technique","q":"What is flagging used for?","a":"Counterbalance and stability","o":["Skipping footholds","Training finger strength","Counterbalance and stability","Increasing chalk grip"]},
+{"cat":"Technique","q":"What is a drop knee used for?","a":"Rotating hips for reach and stability","o":["Avoiding warmups","Rotating hips for reach and stability","Increasing finger strength","Improving chalk coverage"]},
+{"cat":"Technique","q":"What is core tension?","a":"Keeping your body rigid to transfer force","o":["Relaxing legs","Only using fingers","Breathing faster","Keeping your body rigid to transfer force"]},
+{"cat":"Technique","q":"What is a deadpoint?","a":"A controlled dynamic move caught at stillness","o":["A rope clip","A full jump","A controlled dynamic move caught at stillness","A stretch"]},
+{"cat":"Technique","q":"What reduces barn-dooring?","a":"Creating opposition with body position","o":["Pulling harder","Keeping hips away","Creating opposition with body position","Using only crimps"]},
+
+{"cat":"Training","q":"What causes forearm pump?","a":"Sustained gripping reducing blood flow","o":["Too much stretching","Sustained gripping reducing blood flow","Over-hydration","Loose shoes"]},
+{"cat":"Training","q":"What is a max hang?","a":"A high-intensity short hangboard effort","o":["A jog","A comp final","A high-intensity short hangboard effort","A dyno drill"]},
+{"cat":"Training","q":"Why are rest days important?","a":"Tendons adapt slowly and need recovery","o":["They erase progress","They increase pump","Tendons adapt slowly and need recovery","They weaken grip"]},
+{"cat":"Training","q":"What is contact strength?","a":"Ability to latch holds explosively","o":["Smearing skill","Chalk speed","Ability to latch holds explosively","Clip efficiency"]},
+{"cat":"Training","q":"Why is sleep important for climbers?","a":"Recovery and adaptation occur during sleep","o":["Better rubber","Wall angle change","Recovery and adaptation occur during sleep","Instant strength"]},
+
+{"cat":"History","q":"Climbing debuted in the Olympics at:","a":"Tokyo 2020 (held 2021)","o":["London 2012","Tokyo 2020 (held 2021)","Rio 2016","Paris 2024 only"]},
+{"cat":"History","q":"What is the V-scale?","a":"A bouldering grading system","o":["A rope rating","A speed timer","A chalk scale","A bouldering grading system"]},
+{"cat":"History","q":"What is bouldering?","a":"Climbing short problems without ropes using pads","o":["Lead climbing","Speed only","Climbing short problems without ropes using pads","Trad only"]},
+{"cat":"History","q":"What is sport climbing?","a":"Climbing protected by bolts","o":["No protection ever","Trad only","Climbing protected by bolts","Indoor only"]},
+
+{"cat":"Gym Culture","q":"What is a project?","a":"A climb worked over multiple attempts","o":["Warm-up route","A climb worked over multiple attempts","A chalk brand","A rope knot"]},
+{"cat":"Gym Culture","q":"What is a route setter?","a":"Someone who designs gym climbs","o":["Shoe seller","Belayer","Someone who designs gym climbs","Speed judge"]},
+{"cat":"Gym Culture","q":"What is a dab?","a":"Touching the ground during an attempt","o":["Chalking up","Matching hands","Touching the ground during an attempt","Topping out"]},
+{"cat":"Gym Culture","q":"Why different colored holds?","a":"To indicate different routes","o":["Increase friction","Reduce chalk","To indicate different routes","Measure height"]},
+
+{"cat":"Holds","type":"hold","holdKey":"jug","q":"What hold type is this?","a":"Jug","o":["Jug","Sloper","Pinch","Crimp"]},
+{"cat":"Holds","type":"hold","holdKey":"sloper","q":"What hold type is this?","a":"Sloper","o":["Sloper","Jug","Crimp","Pinch"]},
+{"cat":"Holds","type":"hold","holdKey":"pinch","q":"What hold type is this?","a":"Pinch","o":["Pinch","Jug","Sloper","Crimp"]},
+{"cat":"Holds","type":"hold","holdKey":"crimp","q":"What hold type is this?","a":"Crimp","o":["Crimp","Jug","Sloper","Pinch"]},
+{"cat":"Holds","type":"hold","holdKey":"pocket","q":"What hold type is this?","a":"Pocket","o":["Pocket","Jug","Sloper","Crimp"]},
+{"cat":"Holds","type":"hold","holdKey":"volume","q":"What hold type is this?","a":"Volume","o":["Volume","Jug","Sloper","Pinch"]},
+{"cat":"Holds","type":"hold","holdKey":"undercling","q":"What hold type is this?","a":"Undercling","o":["Undercling","Jug","Sloper","Pinch"]},
+{"cat":"Holds","type":"hold","holdKey":"gaston","q":"What hold type is this?","a":"Gaston","o":["Gaston","Jug","Sloper","Pinch"]}
+
+]
